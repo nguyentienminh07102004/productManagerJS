@@ -2,6 +2,9 @@ const express = require("express");
 const routes = require("./routes/client/index.route.js");
 // Cấu hình thư viện cho dotenv
 require("dotenv").config();
+// cấu hình mongoose
+const mongoose = require("./config/database.config.js");
+mongoose.connect();
 
 //Cấu hình port và app express
 const app = express();

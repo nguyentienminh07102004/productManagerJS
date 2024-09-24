@@ -1,10 +1,8 @@
 const express = require("express");
+const controllers = require("../../controllers/client/home.controller.js");
+
 const routes = express.Router();
 
-routes.get("/", (req, res) => {
-	res.render("client/pages/home/index.pug", {
-		"title": "Trang chủ"
-	});
-});
+routes.get("/", controllers.index);
 
 module.exports = routes;

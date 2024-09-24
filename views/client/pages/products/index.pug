@@ -5,14 +5,15 @@ block main
 	div(class="container my-3")
 		div(class="row")
 			div(class="col-12")
-				+box-head("Danh sách sản phẩm") <!-- mixins -->
+				+box-head("Danh sách sản phẩm")
 		div(class="row")
-			div(class="col-4 mb-3")
-				div(class="product-item")
-					div(class="inner-image")
-						img(src="https://th.bing.com/th/id/OIP.ZIdhLcUsQpj03iXPSpQglQHaEK?rs=1&pid=ImgDetMain", alt="IPhone 9")
-					div(class="inner-content")
-						h3(class="inner-title") IPhone 9
-						div(class="inner-price-new") 80$
-						div(class="inner-price0-old") 100$
-						div(class="inner-discount") -20%
+			each product in products
+				div(class="col-4 mb-3")
+					div(class="product-item")
+						div(class="inner-image")
+							img(src=product.thumbnail, alt=product.title)
+						div(class="inner-content")
+							h3(class="inner-title") #{product.title}
+							div(class="inner-price-new") #{product.price}$
+							div(class="inner-price0-old") #{product.priceNew}$
+							div(class="inner-discount") -#{product.discountPercentage}%

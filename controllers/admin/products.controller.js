@@ -1,5 +1,7 @@
 const index = (req, res) => {
-	res.send("Trang sản phẩm admin");
+	res.render("admin/pages/products/index.pug", {
+		title: "Trang sản phẩm"
+	});
 }
 
 module.exports = { index };

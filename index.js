@@ -3,6 +3,8 @@ const express = require("express");
 const routes = require("./routes/client/index.route.js");
 // route admin
 const routeAdmin = require("./routes/admin/index.route.js");
+//Các biến tĩnh constants
+const systemConstants = require("./config/system.config.js");
 // Cấu hình thư viện cho dotenv
 require("dotenv").config();
 // cấu hình mongoose
@@ -18,6 +20,8 @@ app.set("views", "./views");
 app.set("view engine", "pug");
 // Cấu hình file tĩnh là các file public như css js
 app.use(express.static("public"));
+// Cấu hình biến toàn cục (local) trong các file pug
+app.locals.PATH_ADMIN = systemConstants.PATH_ADMIN;
 
 // Cấu hình routes
 routes(app); // client

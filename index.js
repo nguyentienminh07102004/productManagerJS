@@ -1,5 +1,8 @@
 const express = require("express");
+// routes client
 const routes = require("./routes/client/index.route.js");
+// route admin
+const routeAdmin = require("./routes/admin/index.route.js");
 // Cấu hình thư viện cho dotenv
 require("dotenv").config();
 // cấu hình mongoose
@@ -17,7 +20,8 @@ app.set("view engine", "pug");
 app.use(express.static("public"));
 
 // Cấu hình routes
-routes(app);
+routes(app); // client
+routeAdmin(app); // admin
 
 
 app.listen(port, () => {

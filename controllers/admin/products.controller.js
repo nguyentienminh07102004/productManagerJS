@@ -1,32 +1,13 @@
 const Products = require("../../Models/products.model.js");
+const filterStatusHelper = require("../../helpers/filterStatus.helper.js");
 
 // [GET] /admin/products/
 const index = async (req, res) => {
 	const find = { deleted: false };
-	const filterStatus = [
-		{
-			name: "Tất cả",
-			status: "",
-			active: ""
-		},
-		{
-			name: "Hoạt động",
-			status: "active",
-			active: ""
-		},
-		{
-			name: "Dừng hoạt động",
-			status: "inactive",
-			active: ""
-		}
-	];
-	if(req.query.status) {
-		const index = filterStatus.findIndex(item => item.status == req.query.status);
-		if(index >= 0) filterStatus[index].active = "active";
-	} else {
-		const index = filterStatus.findIndex(item => item.status == "");
-		filterStatus[index].active = "active";	
-	}
+	
+	// Bộ lọc theo trạng thái
+	const filterStatus = filterStatusHelper(req.query);
+
 	// truy vấn bằng query
 	let keyword = '';
 	if(req.query != null) {

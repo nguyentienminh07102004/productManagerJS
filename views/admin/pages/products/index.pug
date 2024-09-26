@@ -1,4 +1,6 @@
 extends ../../layouts/default.pug
+include ../../mixins/filterStatus.pug
+
 block main 
 	h1 Trang sản phẩm
 	div(class="card mb-3")
@@ -6,8 +8,7 @@ block main
 		div(class="card-body")
 			div(class="row")
 				div(class="col-6")
-					each item in filterStatus
-						button(class=`btn btn-sm btn-outline-success mr-1 ${item.active}` button-status=item.status) #{item.name}
+					+filterStatus(filterStatus)
 				div(class="col-6")
 					form(method="get" id="form-search")
 						div(class="input-group")

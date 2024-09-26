@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug
 include ../../mixins/filterStatus.pug
+include ../../mixins/search.pug
 
 block main 
 	h1 Trang sản phẩm
@@ -10,11 +11,7 @@ block main
 				div(class="col-6")
 					+filterStatus(filterStatus)
 				div(class="col-6")
-					form(method="get" id="form-search")
-						div(class="input-group")
-							input(type="text" placeholder="Nhập từ khoá ..." name="keyword" class="form-control" value=keyword)
-							div(class="input-group-append")
-								button(class="btn btn-success" type="submit") Tìm kiếm
+					+search(keyword)
 	div(class="card mb-3")
 		div(class="card-header") Danh sách sản phẩm
 		div(class="card-body")

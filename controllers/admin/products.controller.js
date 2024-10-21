@@ -1,6 +1,7 @@
 const Products = require("../../Models/products.model.js");
 const filterStatusHelper = require("../../helpers/filterStatus.helper.js");
 const keywordHelper = require("../../helpers/search.helper.js");
+const paginationHelper = require("../../helpers/pagination.helper.js");
 
 // [GET] /admin/products/
 const index = async (req, res) => {
@@ -16,14 +17,19 @@ const index = async (req, res) => {
 	// lọc theo keyword
 	const keyword = keywordHelper(req.query);
 	if(keyword.regex) find.title = keyword.regex;
+	// Pagination
+	// Lấy số lượng sản phẩm
+	const countProducts = await Products.countDocuments(find);
+	let objectPagination = paginationHelper({ limitItem: 4 }, req.query, countProducts);
 	// Lấy data
-	const products = await Products.find(find);
+	const products = await Products.find(find).limit(objectPagination.limitItem).skip(objectPagination.skip);
 
 	res.render("admin/pages/products/index.pug", {
 		title: "Trang sản phẩm",
 		products: products,
 		filterStatus: filterStatus,
-		keyword: keyword.keyword
+		keyword: keyword.keyword,
+		pagination: objectPagination
 	});
 }
 

@@ -23,3 +23,14 @@ formSearch.addEventListener("submit", (evt) => {
 		url.searchParams.delete("title");
 	window.location.href = url.href;
 });
+
+// pagination
+const buttonPagination = document.querySelectorAll("[button-pagination]");
+if(buttonPagination != null) {
+	buttonPagination.forEach(button => button.addEventListener('click', (evt) => {
+		const value = evt.target.getAttribute("button-pagination");
+		url.searchParams.set("page", parseInt(value));
+		window.location.href = url.href;
+	}));
+}
+// End pagination

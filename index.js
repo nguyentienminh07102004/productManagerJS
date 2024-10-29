@@ -10,6 +10,8 @@ require("dotenv").config();
 // cấu hình mongoose
 const mongoose = require("./config/database.config.js");
 mongoose.connect();
+// method-override
+let methodOverride = require("method-override");
 
 //Cấu hình port và app express
 const app = express();
@@ -23,11 +25,13 @@ app.use(express.static("public"));
 // Cấu hình biến toàn cục (local) trong các file pug
 app.locals.PATH_ADMIN = systemConstants.PATH_ADMIN;
 
+// method-override ghi đè phương thức gửi lên bằng method ban đầu là POST (Phải ghi trước routes để override đúng)
+app.use(methodOverride("_method"));
+
 // Cấu hình routes
 routes(app); // client
 routeAdmin(app); // admin
 
-
 app.listen(port, () => {
-	console.log(`App open in port ${port}`)
+    console.log(`App open in port ${port}`);
 });

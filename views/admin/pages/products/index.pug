@@ -36,11 +36,13 @@ block main
 							td #{product.price}$
 							td
 								if product.status == "active"
-									a(href="#" class="badge badge-success") Hoạt động
+									a(href="#" class="badge badge-success" button-change-status data-status="active" data-id=product.id) Hoạt động
 								else 
-									a(href="#" class="badge badge-danger") Dừng hoạt động 
+									a(href="#" class="badge badge-danger" button-change-status data-status="inactive" data-id=product.id) Dừng hoạt động 
 							td 
 								button(class="btn btn-warning btn-sm") Sửa
 								button(class="btn btn-danger btn-sm ml-1") Xoá
 		div(class="d-flex justify-content-center")
 			+pagination(pagination)
+		form(action="#" method="POST" id='form-change-status' data-path=`${PATH_ADMIN}/products/change-status`) 
+	script(src="/admin/js/product.js") 

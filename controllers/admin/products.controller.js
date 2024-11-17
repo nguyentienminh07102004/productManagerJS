@@ -58,4 +58,12 @@ const changeMultiStatus = async (req, res, next) => {
 	res.redirect(req.get("Referrer"));
 };
 
-module.exports = { index, changeStatus, changeMultiStatus };
+// [DELETE] /admin/products/delete/:id
+const deleteProduct = async (req, res, next) => {
+    const { id } = req.params;
+    console.log(id);
+    await Products.deleteOne({ _id: id });
+    res.redirect(req.get("Referrer"));
+}
+
+module.exports = { index, changeStatus, changeMultiStatus, deleteProduct };

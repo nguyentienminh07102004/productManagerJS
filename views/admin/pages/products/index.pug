@@ -43,12 +43,13 @@ block main
 							td
 								if product.status == "active"
 									a(href="#" class="badge badge-success" button-change-status data-status="active" data-id=product.id) Hoạt động
-								else 
-									a(href="#" class="badge badge-danger" button-change-status data-status="inactive" data-id=product.id) Dừng hoạt động 
-							td 
+								else
+									a(href="#" class="badge badge-danger" button-change-status data-status="inactive" data-id=product.id) Dừng hoạt động
+							td
 								button(class="btn btn-warning btn-sm") Sửa
-								button(class="btn btn-danger btn-sm ml-1") Xoá
+								button(class="btn btn-danger btn-sm ml-1" data-id=product.id button-delete) Xoá
 		div(class="d-flex justify-content-center")
 			+pagination(pagination)
-		form(action="#" method="POST" id='form-change-status' data-path=`${PATH_ADMIN}/products/change-status`) 
-	script(src="/admin/js/product.js") 
+		form(action="#" method="POST" id='form-change-status' data-path=`${PATH_ADMIN}/products/change-status`)
+		form(action="#", method="post" id="form-delete-item" data-path=`${PATH_ADMIN}/products/delete`)
+	script(src="/admin/js/product.js")

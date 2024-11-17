@@ -50,7 +50,7 @@ if (checkboxMulti) {
         });
     });
 }
-
+// change multi
 const formChangeMulti = document.querySelector("[form-change-multi]");
 if(formChangeMulti) {
     formChangeMulti.addEventListener("submit", (evt) => {
@@ -60,5 +60,5 @@ if(formChangeMulti) {
         checkboxesIds.forEach(checkbox => values.push(checkbox.value));
         formChangeMulti.querySelector('input[name=ids]').value = values.join(" ");
         formChangeMulti.submit();
-    })
+    });
 }

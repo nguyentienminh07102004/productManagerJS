@@ -32,3 +32,33 @@ if (buttonPagination != null) {
     );
 }
 // End pagination
+// Checkbox
+const checkboxMulti = document.querySelector("[checkbox-multi]");
+if (checkboxMulti) {
+    const checkboxCheckAll = checkboxMulti.querySelector(
+        "input[name=checkall]"
+    );
+    const checkboxesIds = checkboxMulti.querySelectorAll("input[name=id]");
+    checkboxCheckAll.addEventListener("click", (evt) => {
+        checkboxesIds.forEach(
+            (checkbox) => (checkbox.checked = evt.target.checked)
+        );
+    });
+    checkboxesIds.forEach((checkbox) => {
+        checkbox.addEventListener("click", () => {
+            checkboxCheckAll.checked = checkboxMulti.querySelectorAll("input[name=id]:checked").length === checkboxesIds.length;
+        });
+    });
+}
+
+const formChangeMulti = document.querySelector("[form-change-multi]");
+if(formChangeMulti) {
+    formChangeMulti.addEventListener("submit", (evt) => {
+        evt.preventDefault();
+        const checkboxesIds = checkboxMulti.querySelectorAll("input[name=id]:checked");
+        let values = [];
+        checkboxesIds.forEach(checkbox => values.push(checkbox.value));
+        formChangeMulti.querySelector('input[name=ids]').value = values.join(" ");
+        formChangeMulti.submit();
+    })
+}

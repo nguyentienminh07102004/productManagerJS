@@ -11,7 +11,9 @@ require("dotenv").config();
 const mongoose = require("./config/database.config.js");
 mongoose.connect();
 // method-override
-let methodOverride = require("method-override");
+const methodOverride = require("method-override");
+// body-parser
+const bodyParser = require("body-parser");
 
 //Cấu hình port và app express
 const app = express();
@@ -27,6 +29,10 @@ app.locals.PATH_ADMIN = systemConstants.PATH_ADMIN;
 
 // method-override ghi đè phương thức gửi lên bằng method ban đầu là POST (Phải ghi trước routes để override đúng)
 app.use(methodOverride("_method"));
+// bodyParser
+app.use(bodyParser.urlencoded({ extended: false }));
+// có thể dùng cú pháp sau để thay thế
+// app.use(express.urlencoded({ extended: true }));
 
 // Cấu hình routes
 routes(app); // client

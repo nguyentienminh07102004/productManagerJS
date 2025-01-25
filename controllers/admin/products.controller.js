@@ -49,27 +49,43 @@ const changeStatus = async (req, res) => {
 };
 
 // [PATCH] /admin/products/change-multi
-const changeMultiStatus = async (req, res, next) => {
+const changeMultiStatus = async (req, res) => {
 	const { status, ids } = req.body;
-	await Products.updateMany(
-		{ _id: { $in: ids.split(/\s+/) } },
-		{ status: status }
-	);
+	if (status === "delete-all") {
+		await Products.updateOne(
+			{ _id: { $in: ids.split(/\s+/) } },
+			{ deleted: true, deleteAt: new Date() }
+		);
+	} else {
+		await Products.updateMany(
+			{ _id: { $in: ids.split(/\s+/) } },
+			{ status: status }
+		);
+	}
 	res.redirect(req.get("Referrer"));
 };
 
 // [DELETE] /admin/products/delete/:id
-const deleteProduct = async (req, res, next) => {
-    const { id } = req.params;
-    await Products.deleteOne({ _id: id });
-    res.redirect(req.get("Referrer"));
-}
+const deleteProduct = async (req, res) => {
+	const { id } = req.params;
+	await Products.deleteOne({ _id: id });
+	res.redirect(req.get("Referrer"));
+};
 
 // [DELETE] /admin/products/delete/:id
 const deleteSoftProduct = async (req, res, next) => {
-    const { id } = req.params;
-    await Products.updateOne({ _id: id }, { deleteAt: new Date(), deleted: true });
-    res.redirect(req.get("Referrer"));
-}
+	const { id } = req.params;
+	await Products.updateOne(
+		{ _id: id },
+		{ deleteAt: new Date(), deleted: true }
+	);
+	res.redirect(req.get("Referrer"));
+};
 
-module.exports = { index, changeStatus, changeMultiStatus, deleteProduct, deleteSoftProduct };
+module.exports = {
+	index,
+	changeStatus,
+	changeMultiStatus,
+	deleteProduct,
+	deleteSoftProduct,
+};

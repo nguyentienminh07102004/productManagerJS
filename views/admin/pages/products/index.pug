@@ -4,10 +4,10 @@ include ../../mixins/search.pug
 include ../../mixins/pagination.pug
 include ../../mixins/form-changemulti.pug
 
-block main 
+block main
 	h1 Trang sản phẩm
 	div(class="card mb-3")
-		div(class="card-header") Lọc và tìm kiếm 
+		div(class="card-header") Lọc và tìm kiếm
 		div(class="card-body")
 			div(class="row")
 				div(class="col-6")
@@ -27,6 +27,7 @@ block main
 						th Hình ảnh
 						th Tiêu đề
 						th Giá
+						th Vị trí
 						th Trạng thái
 						th Hành động
 
@@ -41,6 +42,8 @@ block main
 							td #{product.title}
 							td #{product.price}$
 							td
+								input(type="number", min=1, value=product.position, style="width: 60px" name="position")
+							td
 								if product.status == "active"
 									a(href="#" class="badge badge-success" button-change-status data-status="active" data-id=product.id) Hoạt động
 								else
@@ -51,5 +54,5 @@ block main
 		div(class="d-flex justify-content-center")
 			+pagination(pagination)
 		form(action="#" method="POST" id='form-change-status' data-path=`${PATH_ADMIN}/products/change-status`)
-		form(action="#", method="post" id="form-delete-item" data-path=`${PATH_ADMIN}/products/delete`)
+		form(action="#" method="post" id="form-delete-item" data-path=`${PATH_ADMIN}/products/delete`)
 	script(src="/admin/js/product.js")

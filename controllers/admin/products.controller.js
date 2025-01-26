@@ -27,6 +27,7 @@ const index = async (req, res) => {
 	);
 	// Lấy data
 	const products = await Products.find(find)
+		.sort({ position: "desc" })
 		.limit(objectPagination.limitItem)
 		.skip(objectPagination.skip);
 
@@ -56,6 +57,12 @@ const changeMultiStatus = async (req, res) => {
 			{ _id: { $in: ids.split(/\s+/) } },
 			{ deleted: true, deleteAt: new Date() }
 		);
+	} else if(status === "change-position") {
+		const Ids = ids.split(/\s+/);
+		Ids.forEach(async id => {
+			const [ID, position] = id.split("-");
+			await Products.updateOne({ _id: ID }, { position: parseInt(position) });
+		});
 	} else {
 		await Products.updateMany(
 			{ _id: { $in: ids.split(/\s+/) } },

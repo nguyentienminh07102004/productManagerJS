@@ -14,6 +14,10 @@ mongoose.connect();
 const methodOverride = require("method-override");
 // body-parser
 const bodyParser = require("body-parser");
+// express-flash
+const flash = require("express-flash");
+const cookieParser = require("cookie-parser");
+var session = require('express-session')
 
 //Cấu hình port và app express
 const app = express();
@@ -34,10 +38,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // có thể dùng cú pháp sau để thay thế
 // app.use(express.urlencoded({ extended: true }));
 
+app.use(cookieParser("keyboard cat"));
+app.use(session({ cookie: { maxAge: 60000 } }));
+app.use(flash());
+
 // Cấu hình routes
 routes(app); // client
 routeAdmin(app); // admin
 
 app.listen(port, () => {
-    console.log(`App open in port ${port}`);
+	console.log(`App open in port ${port}`);
 });

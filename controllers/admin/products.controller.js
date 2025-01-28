@@ -89,10 +89,39 @@ const deleteSoftProduct = async (req, res, next) => {
 	res.redirect(req.get("Referrer"));
 };
 
+// [GET] /admin/products/create
+const create = async (_, res) => {
+	res.render("admin/pages/products/create.pug", {
+		title: "Create Product"
+	})
+}
+// [POST] /admin/products/create
+const createProduct = async (req, res) => {
+	// validate
+	if (req.body.stock) {
+		req.body.stock = parseInt(req.body.stock);
+	}
+	if (req.body.price) {
+		req.body.price = parseFloat(req.body.price);
+	}
+	if (req.body.discountPercentage) {
+		req.body.discountPercentage = parseFloat(req.body.discountPercentage);
+	}
+	if (req.body.position) {
+		req.body.position = parseInt(req.body.position);
+	} else {
+		req.body.position = (await Products.countDocuments()) + 1;
+	}
+	await Products.create(req.body);
+	res.redirect(req.get("Referrer"));
+}
+
 module.exports = {
 	index,
 	changeStatus,
 	changeMultiStatus,
 	deleteProduct,
 	deleteSoftProduct,
+	createProduct,
+	create
 };

@@ -3,7 +3,7 @@ const routes = express.Router();
 const controllers = require("../../controllers/admin/products.controller.js");
 const multer = require("multer");
 const storage = require("../../helpers/storageMulter.helper.js");
-const upload = multer({ storage: storage() });
+const upload = multer({storage: storage()});
 const middleware = require("../../middleware/Product.middleware.js");
 
 routes.get("/", controllers.index);
@@ -13,5 +13,6 @@ routes.patch("/change-status/:status/:id", controllers.changeStatus);
 routes.patch("/change-status/change-multi", controllers.changeMultiStatus);
 routes.delete("/delete/:id", controllers.deleteSoftProduct);
 routes.get("/update/:id", controllers.update);
+routes.patch("/update/:id", middleware.ProductMiddleware, upload.single('thumbnail'), controllers.updateProduct);
 
 module.exports = routes;

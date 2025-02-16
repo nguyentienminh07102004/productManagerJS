@@ -12,13 +12,15 @@ if (buttonStatus) {
 }
 
 const formSearch = document.querySelector("#form-search");
-formSearch.addEventListener("submit", (evt) => {
-	evt.preventDefault();
-	const keyword = evt.target[0].value;
-	if (keyword) url.searchParams.set("title", keyword);
-	else url.searchParams.delete("title");
-	window.location.href = url.href;
-});
+if (formSearch) {
+	formSearch.addEventListener("submit", (evt) => {
+		evt.preventDefault();
+		const keyword = evt.target[0].value;
+		if (keyword) url.searchParams.set("title", keyword);
+		else url.searchParams.delete("title");
+		window.location.href = url.href;
+	});
+}
 
 // pagination
 const buttonPagination = document.querySelectorAll("[button-pagination]");
@@ -77,3 +79,12 @@ if (formChangeMulti) {
 		formChangeMulti.submit();
 	});
 }
+
+// preview images
+const previewImage = document.querySelector("#preview");
+const thumbnail = document.querySelector("#thumbnail");
+thumbnail.addEventListener("change", (e) => {
+	e.preventDefault();
+	console.log(e.target.files[0]);
+	previewImage.src = URL.createObjectURL(e.target.files[0]);
+});

@@ -1,8 +1,11 @@
 extends ../../layouts/default.pug
+include ../../mixins/messages.pug
 
 block main
 	h1 Thêm sản phẩm
-	form(action=`${PATH_ADMIN}/products/create`, method="post")
+	+messageError()
+	+messageSuccess()
+	form(action=`${PATH_ADMIN}/products/create`, method="post", enctype="multipart/form-data")
 		div(class="form-group")
 			label(for="title") Tên sản phẩm
 			input(type="text", name="title", id="title" class="form-control")
@@ -18,12 +21,19 @@ block main
 		div(class="form-group")
 			label(for="stock") Số lượng
 			input(type="number", name="stock", id="stock" class="form-control" min="1" value="1")
-		div(class="form-group")
-			label(for="thumbnail") Ảnh
-			input(type="file", name="thumbnail", id="thumbnail" class="form-control-file")
+		div(class="d-flex justify-content-evenly")
+			div(class="form-group")
+				label(for="thumbnail") Ảnh
+				input(type="file", name="thumbnail", id="thumbnail" class="form-control-file")
+			img(src="#", alt="" id="preview" width="300px")
 		div(class="form-group")
 			label(for="position") Vị trí
 			input(type="number", name="position", id="position" class="form-control")
+		div(class="form-group d-flex justify-content-evenly")
+			input(type="radio", name="status" id="active" value="active")
+			label(for="active") Hoạt động
+			input(type="radio" name="status" id="inactive" value="inactive")
+			label(for="inactive") Dừng hoạt động
 		div(class="form-group d-flex justify-content-center")
 			button(class="btn btn-success", type="submit") Tạo mới
 	script(src="/admin/js/product.js")

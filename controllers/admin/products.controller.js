@@ -43,7 +43,6 @@ const index = async (req, res) => {
 // [PATCH] /admin/products/change-status/:status/:id/
 const changeStatus = async (req, res) => {
 	let { status, id } = req.params;
-	console.log(status, id);
 	status = status === "active" ? "inactive" : "active";
 	await Products.updateOne({ _id: id }, { status: status });
 	res.redirect(req.get("Referrer") || "/admin/products/");
@@ -57,11 +56,14 @@ const changeMultiStatus = async (req, res) => {
 			{ _id: { $in: ids.split(/\s+/) } },
 			{ deleted: true, deleteAt: new Date() }
 		);
-	} else if(status === "change-position") {
+	} else if (status === "change-position") {
 		const Ids = ids.split(/\s+/);
-		Ids.forEach(async id => {
+		Ids.forEach(async (id) => {
 			const [ID, position] = id.split("-");
-			await Products.updateOne({ _id: ID }, { position: parseInt(position) });
+			await Products.updateOne(
+				{ _id: ID },
+				{ position: parseInt(position) }
+			);
 		});
 	} else {
 		await Products.updateMany(
@@ -80,7 +82,7 @@ const deleteProduct = async (req, res) => {
 };
 
 // [DELETE] /admin/products/delete/:id
-const deleteSoftProduct = async (req, res, next) => {
+const deleteSoftProduct = async (req, res) => {
 	const { id } = req.params;
 	await Products.updateOne(
 		{ _id: id },
@@ -92,9 +94,10 @@ const deleteSoftProduct = async (req, res, next) => {
 // [GET] /admin/products/create
 const create = async (_, res) => {
 	res.render("admin/pages/products/create.pug", {
-		title: "Create Product"
-	})
-}
+		title: "Create Product",
+	});
+};
+
 // [POST] /admin/products/create
 const createProduct = async (req, res) => {
 	// validate
@@ -112,8 +115,23 @@ const createProduct = async (req, res) => {
 	} else {
 		req.body.position = (await Products.countDocuments()) + 1;
 	}
-	await Products.create(req.body);
+	if (req.file) {
+		req.body.thumbnail = `/admin/images/${req.file.filename}`;
+	}
+	try {
+		await Products.create(req.body);
+		req.flash("success", "Tạo sản phẩm thành công!");
+	} catch (err) {
+		req.flash("error", err.errors.title.properties.message);
+	}
 	res.redirect(req.get("Referrer"));
+};
+
+// [GET] /admin/update/:id
+const update = (_, res) => {
+	res.render("admin/pages/products/update.pug", {
+		title: "Cập nhập sản phẩm"
+	})
 }
 
 module.exports = {
@@ -123,5 +141,6 @@ module.exports = {
 	deleteProduct,
 	deleteSoftProduct,
 	createProduct,
-	create
+	create,
+	update
 };

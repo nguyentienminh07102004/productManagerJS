@@ -5,7 +5,10 @@ mongoose.plugin(slug);
 
 const productSchema = new mongoose.Schema(
 	{
-		title: String,
+		title: {
+			type: String,
+			required: true
+		},
 		description: String,
 		price: Number,
 		stock: Number,

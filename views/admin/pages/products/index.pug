@@ -48,13 +48,14 @@ block main
 							td
 								input(type="number", min=1, value=product.position, style="width: 60px" name="position")
 							td
-								if product.status == "active"
+								if product.status === "active"
 									a(href="#" class="badge badge-success" button-change-status data-status="active" data-id=product.id) Hoạt động
 								else
 									a(href="#" class="badge badge-danger" button-change-status data-status="inactive" data-id=product.id) Dừng hoạt động
 							td
-								a(href=`${PATH_ADMIN}/products/update/${product.id}` class="btn btn-warning btn-sm") Sửa
-								button(class="btn btn-danger btn-sm ml-1" data-id=product.id button-delete) Xoá
+								a(href=`${PATH_ADMIN}/products/detail/${product.id}` class="btn btn-success btn-sm") Chi tiết
+								a(href=`${PATH_ADMIN}/products/update/${product.id}` class="btn btn-warning btn-sm mx-1") Sửa
+								button(class="btn btn-danger btn-sm" data-id=product.id button-delete) Xoá
 		div(class="d-flex justify-content-center")
 			+pagination(pagination)
 		form(action="#" method="POST" id='form-change-status' data-path=`${PATH_ADMIN}/products/change-status`)

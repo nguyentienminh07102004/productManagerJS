@@ -17,7 +17,7 @@ const bodyParser = require("body-parser");
 // express-flash
 const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
-var session = require('express-session')
+const session = require('express-session');
 
 //Cấu hình port và app express
 const app = express();

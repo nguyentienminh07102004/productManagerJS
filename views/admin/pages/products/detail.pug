@@ -1,0 +1,13 @@
+extends ../../layouts/default.pug
+
+block main
+    h1 Chi tiết sản phẩm
+    h1 #{product.title}
+    div Giá cả #{product.price} $
+    img(src=product.thumbnail, alt=product.title, width='300px')
+    div(class='me-3') Trạng thái
+        if (product.status === 'active')
+            div(class='badge badge-success') Hoạt động
+        else
+            div(class='badge badge-danger') Dừng hoạt động
+    a(href=`${PATH_ADMIN}/products/update/${product.id}`, target="_blank" class='btn btn-warning' rel="noopener noreferrer") Chỉnh sửa

@@ -14,5 +14,6 @@ routes.patch("/change-status/change-multi", controllers.changeMultiStatus);
 routes.delete("/delete/:id", controllers.deleteSoftProduct);
 routes.get("/update/:id", controllers.update);
 routes.patch("/update/:id", middleware.ProductMiddleware, upload.single('thumbnail'), controllers.updateProduct);
+routes.get("/detail/:id", controllers.detailProduct);
 
 module.exports = routes;

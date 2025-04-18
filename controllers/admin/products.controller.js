@@ -115,9 +115,6 @@ const createProduct = async (req, res) => {
 	} else {
 		req.body.position = (await Products.countDocuments()) + 1;
 	}
-	if (req.file) {
-		req.body.thumbnail = `/admin/images/${req.file.filename}`;
-	}
 	try {
 		await Products.create(req.body);
 		req.flash("success", "Tạo sản phẩm thành công!");

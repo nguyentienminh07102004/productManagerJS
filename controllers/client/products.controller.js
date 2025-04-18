@@ -1,7 +1,7 @@
 const Products = require("../../Models/products.model.js");
 
 // [GET] /products
-const index = async (req, res) => {
+const index = async (_, res) => {
 	const find = {
 		status: "active",
 		deleted: false,
@@ -24,7 +24,7 @@ const detail = async (req, res) => {
 	const find = { slug };
 	const product = await Products.findOne(find);
 	res.render("client/pages/products/detail.pug", {
-		title: "Sản phẩm",
+		title: `Sản phẩm ${product.title}`,
 		product: product
 	});
 };

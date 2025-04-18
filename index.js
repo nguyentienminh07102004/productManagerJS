@@ -17,17 +17,26 @@ const bodyParser = require("body-parser");
 // express-flash
 const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
-const session = require('express-session');
+const session = require("express-session");
+const { diskStorage } = require("multer");
 
+// cloudinary
+const cloudinary = require("cloudinary");
+
+cloudinary.config({
+	cloud_name: "dljstsebh",
+	api_key: "845699431421261",
+	api_secret: "OOmJY9ElruAbfM1rUFgMOICyOCY",
+});
 //Cấu hình port và app express
 const app = express();
 const port = process.env.PORT;
 
 // Cấu hình template(pug)
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 // Cấu hình file tĩnh là các file public như css js
-app.use(express.static("public"));
+app.use(express.static(`${__dirname}/public`));
 // Cấu hình biến toàn cục (local) trong các file pug
 app.locals.PATH_ADMIN = systemConstants.PATH_ADMIN;
 

@@ -20,16 +20,17 @@ const index = async (req, res) => {
 	// Pagination
 	// Lấy số lượng sản phẩm
 	const countProducts = await Products.countDocuments(find);
-	let objectPagination = paginationHelper(
-		{ limitItem: 4 },
-		req.query,
-		countProducts
-	);
+	let objectPagination = paginationHelper({ limitItem: 4 }, req.query, countProducts);
+	// sort
+	const sort = {};
+	if (req.query.sortKey && req.query.sortValue) {
+		sort[req.query.sortKey] = req.query.sortValue;
+	} else {
+		sort.position = "desc";
+	}
+	console.log(sort);
 	// Lấy data
-	const products = await Products.find(find)
-		.sort({ position: "desc" })
-		.limit(objectPagination.limitItem)
-		.skip(objectPagination.skip);
+	const products = await Products.find(find).sort(sort).limit(objectPagination.limitItem).skip(objectPagination.skip);
 
 	res.render("admin/pages/products/index.pug", {
 		title: "Trang sản phẩm",
@@ -37,6 +38,7 @@ const index = async (req, res) => {
 		filterStatus: filterStatus,
 		keyword: keyword.keyword,
 		pagination: objectPagination,
+		sort: sort
 	});
 };
 
@@ -52,24 +54,15 @@ const changeStatus = async (req, res) => {
 const changeMultiStatus = async (req, res) => {
 	const { status, ids } = req.body;
 	if (status === "delete-all") {
-		await Products.updateOne(
-			{ _id: { $in: ids.split(/\s+/) } },
-			{ deleted: true, deleteAt: new Date() }
-		);
+		await Products.updateOne({ _id: { $in: ids.split(/\s+/) } }, { deleted: true, deleteAt: new Date() });
 	} else if (status === "change-position") {
 		const Ids = ids.split(/\s+/);
 		Ids.forEach(async (id) => {
 			const [ID, position] = id.split("-");
-			await Products.updateOne(
-				{ _id: ID },
-				{ position: parseInt(position) }
-			);
+			await Products.updateOne({ _id: ID }, { position: parseInt(position) });
 		});
 	} else {
-		await Products.updateMany(
-			{ _id: { $in: ids.split(/\s+/) } },
-			{ status: status }
-		);
+		await Products.updateMany({ _id: { $in: ids.split(/\s+/) } }, { status: status });
 	}
 	res.redirect(req.get("Referrer"));
 };
@@ -84,10 +77,7 @@ const deleteProduct = async (req, res) => {
 // [DELETE] /admin/products/delete/:id
 const deleteSoftProduct = async (req, res) => {
 	const { id } = req.params;
-	await Products.updateOne(
-		{ _id: id },
-		{ deleteAt: new Date(), deleted: true }
-	);
+	await Products.updateOne({ _id: id }, { deleteAt: new Date(), deleted: true });
 	res.redirect(req.get("Referrer"));
 };
 

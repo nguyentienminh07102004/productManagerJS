@@ -5,8 +5,7 @@ const multer = require("multer");
 //const storage = require("../../helpers/storageMulter.helper.js");
 const upload = multer();
 const middleware = require("../../middleware/Product.middleware.js");
-const cloudinary = require("cloudinary").v2;
-const streamifier = require("streamifier");
+const { uploadCloud } = require("../../middleware/UploadCloud.middleware.js");
 
 routes.get("/", controllers.index);
 routes.get("/create", controllers.create);
@@ -14,31 +13,7 @@ routes.post(
 	"/create",
 	middleware.ProductMiddleware,
 	upload.single("thumbnail"),
-	function (req, _, next) {
-		if (!req.file) {
-			next();
-		}
-		let streamUpload = (req) => {
-			return new Promise((resolve, reject) => {
-				let stream = cloudinary.uploader.upload_stream(
-					(error, result) => {
-						if (result) {
-							resolve(result);
-						} else {
-							reject(error);
-						}
-					}
-				);
-				streamifier.createReadStream(req.file.buffer).pipe(stream);
-			});
-		};
-		async function upload(req) {
-			let result = await streamUpload(req);
-			req.body[req.file.fieldname] = result.url;
-			next();
-		}
-		upload(req);
-	},
+	uploadCloud,
 	controllers.createProduct
 );
 routes.patch("/change-status/:status/:id", controllers.changeStatus);
@@ -49,28 +24,7 @@ routes.patch(
 	"/update/:id",
 	middleware.ProductMiddleware,
 	upload.single("thumbnail"),
-	function (req, _, next) {
-		let streamUpload = (req) => {
-			return new Promise((resolve, reject) => {
-				let stream = cloudinary.uploader.upload_stream(
-					(error, result) => {
-						if (result) {
-							resolve(result);
-						} else {
-							reject(error);
-						}
-					}
-				);
-				streamifier.createReadStream(req.file.buffer).pipe(stream);
-			});
-		};
-		async function upload(req) {
-			let result = await streamUpload(req);
-			console.log(result);
-		}
-		upload(req);
-		next();
-	},
+	uploadCloud,
 	controllers.updateProduct
 );
 routes.get("/detail/:id", controllers.detailProduct);

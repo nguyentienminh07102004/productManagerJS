@@ -18,15 +18,14 @@ const bodyParser = require("body-parser");
 const flash = require("express-flash");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const { diskStorage } = require("multer");
 
 // cloudinary
 const cloudinary = require("cloudinary");
 
 cloudinary.config({
-	cloud_name: "dljstsebh",
-	api_key: "845699431421261",
-	api_secret: "OOmJY9ElruAbfM1rUFgMOICyOCY",
+	cloud_name: process.env.CLOUDINARY_NAME,
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 //Cấu hình port và app express
 const app = express();
